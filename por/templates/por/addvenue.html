@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!--  <h2>Welcome Home, {{ user.username }}!</h2>
+
+<div id="topic" class="upvote">
+    <a class="upvote"></a>
+    <span class="count">0</span>
+    <a class="downvote"></a>
+    <a class="star"></a>
+</div>
+-->
+
+ <div class="panel panel-info" style="max-width: 800px ;margin:10px auto">
+                    <div class="panel-heading" align="center"><h4>Add New Venue</h4></div>
+                        <div class="panel-body">
+
+<form method="post" action="" class="form">
+  {% csrf_token %}
+
+
+      <div class="form-group">
+        <label>Name:</label>
+        <input class="form-control" type="text" name="venue_name" id="name" readonly/>
+      </div>
+      <div class="form-group">
+        <label>Address:</label>
+        <input class="form-control" type="text" name="formatted_address" id="formatted_address" readonly/>
+      </div>
+
+        <input class="form-control" type="hidden" name="google_maps_url" id="url" readonly/>
+
+        <input class="form-control" type="hidden" name="lattitude" id="lat" readonly/>
+
+
+        <input class="form-control" type="hidden" name="longitude" id="lng" readonly/>
+        <input class="form-control" type="hidden" name="website_url" id="website" readonly/>
+        <input class="form-control" type="hidden" name="place_id" id="place_id" readonly/>
+
+    <div class="form-group">
+       <dt><input id="btn_add" name="btn_void" class="btn btn-info" type="submit" value="Add New"/></dt>
+    </div>
+
+    {% if form.errors %}
+    {% for field in form %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{field.name}} : {{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}
+
+</form>
+
+
+ <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+ <div class="embed-responsive embed-responsive-4by3">
+<div id="map-container" class="embed-responsive-item">
+ <div id="map"></div>
+ </div>
+
+ </div>
+
+</div>
+</div>
+
+ <script src="https://maps.googleapis.com/maps/api/js?key={{google_maps_api_key}}&libraries=places&callback=initAutocomplete" async defer></script>
+
+<script>
+$( document ).ready(function() {
+
+    document.getElementById('btn_add').disabled = true;
+
+    $('#name').on('keyup', function() {
+        document.getElementById('btn_add').disabled = false;
+    });
+
+     Messenger.options = {
+                extraClasses: 'messenger-fixed messenger-on-top',
+                theme: 'flat'
+            }
+
+
+     $('#btn_add').click(function(){
+	    msg = Messenger().post({
+              message: "Successfully added venue " + document.getElementById('name').value,
+              type: 'success',
+              hideAfter: 3,
+              showCloseButton: true,
+           });
+      });
+});
+
+
+    </script>
+
+
+
+
+
+{% endblock %}

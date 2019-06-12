@@ -1,0 +1,21 @@
+{% extends "notifications/base.html" %}
+{% load i18n %}
+{% load notification_tags %}
+{% block title %}{% trans "Notifications" %}{% endblock %}
+{% block content %}
+<div class="panel panel-default" style="margin:10px auto">
+    <div class="panel-heading" align="center"><h4>Notifications</h4></div>
+     <div class="panel-body">
+    <button class="btn btn-success mark-all-notifications" data-mark-action="read">{% trans "Mark all as read" %}</button>
+    <button style="float: right; auto" class="btn btn-danger mark-all-notifications" data-mark-action="unread">{% trans "Mark all as unread" %}</button>
+    <hr>
+    <ul class="notifications list-group">
+    {% if notifications %}
+    {% render_notifications using notifications %}
+    {% endif %}
+    </ul>
+     </div>
+</div>
+{% endblock %}
+
+

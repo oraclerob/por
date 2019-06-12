@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!--  <h2>Welcome Home, {{ user.username }}!</h2>
+
+<div id="topic" class="upvote">
+    <a class="upvote"></a>
+    <span class="count">0</span>
+    <a class="downvote"></a>
+    <a class="star"></a>
+</div>
+-->
+
+<script>
+jQuery.fn.filterByText = function(textbox) {
+  return this.each(function() {
+    var select = this;
+    var options = [];
+    $(select).find('option').each(function() {
+      options.push({
+        value: $(this).val(),
+        text: $(this).text()
+      });
+    });
+    $(select).data('options', options);
+
+    $(textbox).bind('change keyup', function() {
+      var options = $(select).empty().data('options');
+      var search = $.trim($(this).val());
+      var regex = new RegExp(search, "gi");
+
+      $.each(options, function(i) {
+        var option = options[i];
+        if (option.text.match(regex) !== null) {
+          $(select).append(
+            $('<option>').text(option.text).val(option.value)
+          );
+        }
+      });
+    });
+  });
+};
+
+$(function() {
+  $(drink_name).filterByText($(drinkinput));
+});
+</script>
+
+ <div class="panel panel-info" style="max-width: 800px ;margin:10px auto">
+                    <div class="panel-heading" align="center"><h4>Add Drink to {{venue_name}}</h4></div>
+                        <div class="panel-body">
+
+  {% if form.errors %}
+    {% for field in form %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{field.name}} : {{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    <!--{% for error in form.non_field_errors %}-->
+        <!--<div class="alert alert-danger">-->
+            <!--<strong>{{ error|escape }}</strong>-->
+        <!--</div>-->
+    <!--{% endfor %}-->
+    {% endif %}
+
+<form id="adddrinks" method="post" action="" class="form">
+  {% csrf_token %}
+
+     <div class="form-group">
+     <div class="input-group">
+          <span class="input-group-addon" style=""><span class="glyphicon glyphicon-search"></span>
+          </span>
+            <input id="drinkinput" class="form-control" placeholder="Search Drink..." class="form-control" type="text" value="">
+
+     </div>
+     </div>
+
+      <div class="form-group">
+
+          <label for="drink_name">Drink Name:</label>
+          <select class="form-control" id="drink_name" name="drink_name">
+              {% for r in brands %}
+                <option {% if r.drink_name == form.data.drink_name %}selected{% endif %}>{{r.drink_name}}</option>
+              {% endfor %}
+          </select>
+      </div>
+
+
+     <div class="form-group">
+        <label>Price:</label>
+        <input class="form-control" name="price" id="price" type="number" step="0.01" value="{{drink_form.price}}"/>
+      </div>
+
+      <div class="form-group">
+          <label for="drink_size">Size:</label>
+          <select class="form-control" id="drink_size" name="drink_size">
+            <option>Pint</option>
+            <option>Middy</option>
+            <option>Schooner</option>
+            <option>Glass</option>
+            <option>Bottle</option>
+            <option>Stubby</option>
+            <option>Can</option>
+          </select>
+      </div>
+
+     <div class="form-group">
+        <label>Happy Hour Price:</label>
+           <input class="form-control" type="text" name="hh_price" id="hh_price" value="{{drink_form.hh_price}}"/>
+     </div>
+
+     <div class="form-group">
+          <label for="hh_days">Happy Hour Days:</label>
+          <select class="form-control" id="hh_days" name="hh_days">
+            <option selected></option>
+            <option>Monday</option>
+            <option>Tuesday</option>
+            <option>Wednesday</option>
+            <option>Thursday</option>
+            <option>Friday</option>
+            <option>Saturday</option>
+            <option>Sunday</option>
+            <option>Mon - Fri</option>
+            <option>Sat - Sun</option>
+          </select>
+      </div>
+
+     <div class="form-group">
+          <label for="hh_time_start">Happy Hour Start Time:</label>
+          <select class="form-control" id="hh_time_start" name="hh_time_start">
+            <option selected></option>
+            <option>3pm</option>
+            <option>4pm</option>
+            <option>5pm</option>
+            <option>6pm</option>
+            <option>7pm</option>
+            <option>8pm</option>
+            <option>9pm</option>
+            <option>10pm</option>
+            <option>11pm</option>
+            <option>12pm</option>
+          </select>
+      </div>
+
+     <div class="form-group">
+          <label for="hh_time_end">Happy Hour End Time:</label>
+          <select class="form-control" id="hh_time_end" name="hh_time_end">
+            <option></option>
+            <option>4pm</option>
+            <option>5pm</option>
+            <option>6pm</option>
+            <option>7pm</option>
+            <option>8pm</option>
+            <option>9pm</option>
+            <option>10pm</option>
+            <option>11pm</option>
+            <option>12pm</option>
+          </select>
+      </div>
+
+    <input class="form-control" type="hidden" name="venue_id" id="venue_id" value="{{venue_id}}"/>
+
+    <div class="form-group">
+       <dt><input id="btn_add" name="btn_add" class="btn btn-info" type="submit" value="Add New Drink"/></dt>
+    </div>
+
+</form>
+
+
+
+
+</div>
+</div>
+
+
+
+<script>
+$( document ).ready(function() {
+
+     Messenger.options = {
+                extraClasses: 'messenger-fixed messenger-on-top',
+                theme: 'flat'
+            }
+
+
+     $('#btn_add').click(function(){
+	    msg = Messenger().post({
+              message: "Successfully added drink " + document.getElementById('drink_name').value,
+              type: 'success',
+              hideAfter: 3,
+              showCloseButton: true,
+           });
+      });
+
+
+      <!--$('#adddrinks').validate({-->
+
+         <!--rules: {-->
+             <!--hh_days: {-->
+                 <!--required: {-->
+                     <!--depends: function(element){-->
+                         <!--return $("#hh_price").val()!=""-->
+                     <!--}-->
+                 <!--}-->
+             <!--},-->
+             <!--hh_time_start: {-->
+                 <!--required: {-->
+                     <!--depends: function(element){-->
+                         <!--return $("#hh_days").val()!=""-->
+                     <!--}-->
+                 <!--}-->
+             <!--},-->
+             <!--hh_time_end: {-->
+                 <!--required: {-->
+                     <!--depends: function(element){-->
+                         <!--return $("#hh_time_start").val()!=""-->
+                     <!--}-->
+                 <!--}-->
+             <!--}-->
+         <!--}-->
+
+     <!--});-->
+});
+
+
+
+    </script>
+
+
+
+
+
+{% endblock %}
