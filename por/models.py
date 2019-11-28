@@ -24,6 +24,7 @@ class Stations(models.Model):
 
     class Meta:
         verbose_name_plural = "Stations"
+        ordering = ('station_number',)
 
 class Station_GPIO_Mappings(models.Model):
     station                 = models.ForeignKey(Stations, on_delete=models.CASCADE)
@@ -88,6 +89,7 @@ class RunDetails(models.Model):
 
     class Meta:
         verbose_name_plural = "RunDetails"
+        ordering = ('station',)
 
 
 class Weather(models.Model):
