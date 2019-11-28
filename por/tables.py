@@ -32,6 +32,22 @@ class RunDayTable(tables.Table):
 
         return mark_safe(status)
 
+    def render_start_time(self, value, record):
+
+        import math
+        hour = int(math.floor(value / 100))
+        rem = int(value % 100)
+        if rem < 10:
+            rem = str('0' + str(rem))
+        
+        ampm = ''
+        if (hour < 12):
+            ampm = 'AM'
+        else:
+            ampm = 'PM'
+
+        return(str(hour) + ':' + str(rem)) + ' ' + ampm
+
     class Meta:
         model = RunDay
         template_name = 'django_tables2/bootstrap-responsive.html'
@@ -79,7 +95,7 @@ class RunHeaderTable(tables.Table):
         #fdate = datetime.strptime(value,'%Y-%m-%d %H:%M:%S')
         pst = pytz.timezone('Australia/Perth')
         value = value.astimezone(pst)
-        return mark_safe(value.strftime('%b %d %Y'))
+        return mark_safe(value.strftime('%Y-%m-%d'))
 
     def render_end_date(self, value, record):
 
@@ -87,7 +103,7 @@ class RunHeaderTable(tables.Table):
         pst = pytz.timezone('Australia/Perth')
         value = value.astimezone(pst)
 
-        return mark_safe(value.strftime('%b %d %Y'))
+        return mark_safe(value.strftime('%Y-%m-%d'))
 
     def render_last_run(self, value, record):
 

@@ -18,6 +18,7 @@ from django.db.models import Sum,Count
 from django_tables2 import RequestConfig
 from django.db.models import Q
 from django.db import IntegrityError
+from django.utils.dateformat import DateFormat
 
 from registration.backends.hmac.views import RegistrationView
 from notify.signals import notify
@@ -262,6 +263,15 @@ class EditRunView(FormView):
 
         form = RunHeaders.objects.filter(Q(id=self.request.GET.get('run_id'))).first()
 
+        pst = pytz.timezone('Australia/Perth')
+        form.start_date = form.start_date.astimezone(pst)
+        form.end_date = form.end_date.astimezone(pst)
+       
+        df = DateFormat(form.start_date) 
+        form.start_date = df.format('Y-m-d')
+        df = DateFormat(form.end_date) 
+        form.end_date = df.format('Y-m-d')
+        
         return render(request, 'por/editrun.html',{'form' : form,})
 
     def post(self, request):
@@ -278,6 +288,7 @@ class EditRunView(FormView):
         form = EditRunForm(request.POST, instance=user_form)
 
         if form.is_valid():
+       
             user_form = form.save(commit=False)
             user_form.last_updated_by = 0
             user_form.last_update_date = datetime.now()
@@ -302,8 +313,11 @@ class EditDayView(FormView):
         init_session(self,request)
 
         form = RunDay.objects.filter(Q(id=self.request.GET.get('id'))).first()
-
-        return render(request, 'por/editday.html',{'form' : form,})
+        import math
+        hour = int(math.floor(form.start_time / 100))
+        rem = int(form.start_time % 100)
+        start_time = str(hour) + ':' + str(rem)
+        return render(request, 'por/editday.html',{'form' : form,'start_time' : start_time})
 
     def post(self, request):
 
@@ -319,6 +333,7 @@ class EditDayView(FormView):
 
         if form.is_valid():
             user_form = form.save(commit=False)
+            user_form.start_time =  int(request.POST['xstart_time'].replace(':',''))
             user_form.last_updated_by = 0
             user_form.last_update_date = datetime.now()
             if self.request.POST.get('btn_stop'):

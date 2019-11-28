@@ -312,3 +312,15 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+@media (min-width: 800px) {
+  .col-md-6 {
+    margin-left: -3.5em !important;
+    margin-right: 3.5em !important
+  }
+
+  .col-md-12 {
+    margin-left: -3.5em !important;
+    margin-right: 3.5em !important
+  }
+}

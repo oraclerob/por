@@ -38,12 +38,29 @@ class ManualForm(forms.ModelForm):
 
 class EditRunForm(forms.ModelForm):
 
+    start_date = forms.DateTimeField(
+        input_formats=['%Y-%m-%d'],
+        widget=forms.DateTimeInput(attrs={
+            'class': 'form-control datetimepicker-input',
+            'data-target': '#datetimepicker1'
+        })
+    )
+
+    end_date = forms.DateTimeField(
+        input_formats=['%Y-%m-%d'],
+        widget=forms.DateTimeInput(attrs={
+            'class': 'form-control datetimepicker-input',
+            'data-target': '#datetimepicker2'
+        })
+    )
+
     def __init__(self, *args, **kwargs):
         super(EditRunForm, self).__init__(*args, **kwargs)
 
     class Meta:
         fields = ['run_name','status','start_date','end_date']
         model = RunHeaders
+        
 
 class EditDayForm(forms.ModelForm):
 
