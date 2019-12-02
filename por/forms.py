@@ -79,7 +79,7 @@ class EditDetailsForm(forms.ModelForm):
         super(EditDetailsForm, self).__init__(*args, **kwargs)
 
     class Meta:
-        fields = ['station_seconds']
+        fields = ['station','station_seconds']
         model = RunDetails
 
 class EditStationForm(forms.ModelForm):

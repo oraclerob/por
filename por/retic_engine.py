@@ -110,6 +110,20 @@ class ReticEngine():
         for i in  ReticEngine.get_stations():
             ReticEngine.openCloseValvesDB(i.station.station_number,i.station_gpio ,i.station.station_default_seconds if seconds == None else seconds)
 
+    @staticmethod
+    @start_new_thread
+    def stopRun(run_day_id):
+        pst = pytz.timezone('Australia/Perth')
+        now = datetime.now(pst)
+        rd = RunDay.objects.filter(id=run_day_id)
+
+        ReticEngine.closeValvesDB()
+
+        for s in rd:
+            s.last_updated_by = 0
+            s.last_update_date = now
+            s.run_status = 'Stopped'
+            s.save()
 
     @staticmethod
     def runCycleFromDB(run_details,run_day_id):

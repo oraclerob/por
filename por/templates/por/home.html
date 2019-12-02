@@ -46,6 +46,8 @@
 
                     {% render_table headertable %}
 
+                    <a class="btn btn-info" role="button" href="/por/addcycle/">Add Run Cycle</a>
+
 
             </div>
         </div>
@@ -73,7 +75,7 @@
 
 
                     {% render_table rundaytable %}
-
+                    <a class="btn btn-info" role="button" href="/por/addday/?run_id={{run_id}}">Add Day</a>
             </div>
         </div>
      </div>
@@ -86,6 +88,7 @@
                 <div class="panel-body">
 
                     {% render_table detailtable %}
+                    <a class="btn btn-info" role="button" href="/por/addstation/?run_id={{run_id}}">Add Station</a>
 
                 </div>
             </div>
@@ -131,12 +134,7 @@ $( document ).ready(function() {
         $("#{{rchecked}}").attr('checked', false);
 
         toastr.info("<div class=\"fa fa-spinner fa-spin\"></div> Loading.... ", "");
-        <!--msg = Messenger().post({-->
-              <!--message: "test",-->
-              <!--type: 'success',-->
-              <!--hideAfter: 3,-->
-              <!--showCloseButton: true,-->
-           <!--});-->
+    
     });
 
     $("a").on("click", function (e) {
@@ -145,8 +143,6 @@ $( document ).ready(function() {
         toastr.info("<div class=\"fa fa-spinner fa-spin\"></div> Loading.... ", "");
 
     });
-
-
 
 
 });

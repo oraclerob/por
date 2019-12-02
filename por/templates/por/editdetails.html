@@ -25,6 +25,15 @@
                <form id="editdetails" method="post" action="" class="form">
                   {% csrf_token %}
 
+                     <div class="form-group">
+                        <label>Station Number</label>
+                        <select class="form-control" id="station" name="station">
+                              {% for r in stations %}
+                                <option value="{{r.id}}" {% if r.station_number|stringformat:"s" == form.station|stringformat:"s" %}selected{% endif %}>{{r.station_number}}</option>
+                              {% endfor %}
+                          </select>
+                      </div>
+
                       <div class="form-group">
                         <label>Time (in seconds):</label>
                          <input class="form-control" name="station_seconds" id="station_seconds" type="number" step="1" value="{{form.station_seconds}}"/>
@@ -32,11 +41,12 @@
 
                      <div class="form-group">
                         <dt><input style="float:left; width: auto" id="btn_edit" name="btn_edit" class="btn btn-info" type="submit" value="Edit"/></dt>
+                        <dt><input style="float:right; width: auto" id="btn_delete" name="btn_delete" class="btn btn-danger" type="submit" value="Delete Station"/></dt>
                      </div>
 
                      <input type="hidden" id="id "name="id" value="{{form.id}}" />
-
-                </form>
+                     <input type="hidden" id="run_id "name="run_id" value="{{form.run_id}}" />
+                     <input type="hidden" id="add_run_id "name="add_run_id" value="{{add_run_id}}" />
 
                 </form>
          </div>

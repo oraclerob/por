@@ -15,6 +15,8 @@ from django.conf import settings
 
 class RunDayTable(tables.Table):
 
+    id = tables.Column(verbose_name='')
+
     def render_weekday(self, value, record):
         vote_count = 0
         data = RunDay.objects.filter(id=record.id)
@@ -27,10 +29,21 @@ class RunDayTable(tables.Table):
         status = ''
         if data[0].run_status == 'Running':
             status = '<span class="stamp stamp-approved">Running</span>'
+        elif data[0].run_status == 'Stopped':
+            status = '<span class="stamp stamp-declined">Stopped</span>'
         else:
-            status = ''
+            status = '<span class="stamp stamp-declined">Off</span>'
 
         return mark_safe(status)
+
+    def render_id(self, value, record):
+
+        data = RunDay.objects.filter(id=record.id)
+
+        if data[0].run_status == 'Running':
+            return mark_safe('<a class="btn btn-danger" role="button" href="/por/home/?stoprun=Y&stop_run_id=' + str(record.id) + '">' + str('Stop') + '</a>')
+        else:
+            return('')
 
     def render_start_time(self, value, record):
 
@@ -51,7 +64,7 @@ class RunDayTable(tables.Table):
     class Meta:
         model = RunDay
         template_name = 'django_tables2/bootstrap-responsive.html'
-        fields = ('weekday','start_time','run_status')
+        fields = ('weekday','start_time','run_status','id')
         attrs = {"class": "table table-striped"}
 
 class RunHeaderTable(tables.Table):

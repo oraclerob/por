@@ -143,6 +143,10 @@ class HomeView(FormView):
 
         init_session(self,request)
 
+        if request.GET.get('stoprun') == 'Y':
+            ReticEngine.stopRun(request.GET.get('stop_run_id'))
+
+
         #table = StationTable(Stations.objects.filter(Q(venue_id=request.GET.get('venue_id'))))
         headertable = RunHeaderTable(RunHeaders.objects.all())        # get the queryset
         if request.GET.get('run_id'):
@@ -165,7 +169,8 @@ class HomeView(FormView):
                                                 ,'run_name': qheadertable.run_name
                                                 ,'headertable' : headertable
                                                 ,'detailtable' : detailtable
-                                                ,'rundaytable' : rundaytable})
+                                                ,'rundaytable' : rundaytable
+                                                ,'run_id' : request.GET.get('run_id')})
 
 
     def post(self, request):
@@ -263,6 +268,10 @@ class EditRunView(FormView):
 
         form = RunHeaders.objects.filter(Q(id=self.request.GET.get('run_id'))).first()
 
+        if request.GET.get('run_id') is None:
+             form = RunHeaders()
+             form.id = ''
+
         pst = pytz.timezone('Australia/Perth')
         form.start_date = form.start_date.astimezone(pst)
         form.end_date = form.end_date.astimezone(pst)
@@ -284,15 +293,26 @@ class EditRunView(FormView):
             value = request.POST[key]
             print(value)
 
-        user_form = RunHeaders.objects.filter(Q(id=self.request.POST.get('run_id'))).first()
-        form = EditRunForm(request.POST, instance=user_form)
-
+        if request.POST.get('id') == '':
+            user_form = RunHeaders()
+            form = EditRunForm(request.POST,instance=user_form)
+            form.id = ''
+        else:
+            user_form = RunHeaders.objects.filter(Q(id=self.request.POST.get('run_id'))).first()
+            form = EditRunForm(request.POST, instance=user_form)
+            
         if form.is_valid():
-       
-            user_form = form.save(commit=False)
-            user_form.last_updated_by = 0
-            user_form.last_update_date = datetime.now()
-            user_form.save()
+            if self.request.POST.get('btn_delete'):
+                print('deleting',request.POST.get('id'))
+                delete_h = RunHeaders.objects.filter(Q(id=self.request.POST.get('id')))
+                delete_h.delete()
+                delete_d = RunDay.objects.filter(Q(id=self.request.POST.get('run_id')))
+                delete_d.delete()
+            else:
+                user_form = form.save(commit=False)
+                user_form.last_updated_by = 0
+                user_form.last_update_date = datetime.now()
+                user_form.save()
         else:
             print("form invalid!!", form.errors)
             return render(request, 'por/editrun.html', {'form': form})
@@ -309,14 +329,22 @@ class EditDayView(FormView):
 
         menu_list(self,'list32')
 
-
         init_session(self,request)
 
-        form = RunDay.objects.filter(Q(id=self.request.GET.get('id'))).first()
-        import math
-        hour = int(math.floor(form.start_time / 100))
-        rem = int(form.start_time % 100)
-        start_time = str(hour) + ':' + str(rem)
+        form = ''
+        start_time = '0'
+
+        if request.GET.get('id') is not None:
+            form = RunDay.objects.filter(Q(id=self.request.GET.get('id'))).first()
+            import math
+            hour = int(math.floor(form.start_time / 100))
+            rem = int(form.start_time % 100)
+            start_time = str(hour) + ':' + str(rem)
+        else:
+            form = RunDay()
+            form.run_id = self.request.GET.get('run_id')
+            form.id = ''
+
         return render(request, 'por/editday.html',{'form' : form,'start_time' : start_time})
 
     def post(self, request):
@@ -328,23 +356,37 @@ class EditDayView(FormView):
             value = request.POST[key]
             print(value)
 
-        user_form = RunDay.objects.filter(Q(id=self.request.POST.get('id'))).first()
-        form = EditDayForm(request.POST, instance=user_form)
+        if request.POST.get('id') != '':
+            user_form = RunDay.objects.filter(Q(id=self.request.POST.get('id'))).first()
+            form = EditDayForm(request.POST, instance=user_form)
+        else:
+            form = EditDayForm(request.POST)
+            form.run_id = request.POST.get('run_id')
+            form.start_time =  int(request.POST['xstart_time'].replace(':',''))
+            
 
         if form.is_valid():
-            user_form = form.save(commit=False)
-            user_form.start_time =  int(request.POST['xstart_time'].replace(':',''))
-            user_form.last_updated_by = 0
-            user_form.last_update_date = datetime.now()
-            if self.request.POST.get('btn_stop'):
-                user_form.run_status = 'Stopped'
-            user_form.save()
+            if self.request.POST.get('btn_delete'):
+                print('deleting',request.POST.get('id'))
+                delete_form = RunDay.objects.filter(Q(id=self.request.POST.get('id')))
+                delete_form.delete()
+            else:
+                user_form = form.save(commit=False)
+                if request.POST.get('id') == '':
+                    user_form.run_id = form.run_id
+                user_form.start_time =  int(request.POST['xstart_time'].replace(':',''))
+                user_form.last_updated_by = 0
+                user_form.last_update_date = datetime.now()
+                if self.request.POST.get('btn_stop'):
+                    user_form.run_status = 'Stopped'
+                user_form.save()
         else:
             print("form invalid!!", form.errors)
             return render(request, 'por/editday.html', {'form': form})
 
-        return django.http.HttpResponseRedirect('/por/home/')
+        return django.http.HttpResponseRedirect('/por/home/?run_id=' + str(request.POST.get('run_id')))
         #return render(request, 'por/manual.html', {'station_table': station_table, 'station_number': station_number,})
+
 
 class EditDetailsView(FormView):
 
@@ -355,35 +397,50 @@ class EditDetailsView(FormView):
 
         menu_list(self,'list33')
 
-
         init_session(self,request)
 
         form = RunDetails.objects.filter(Q(id=self.request.GET.get('id'))).first()
+        stations = Stations.objects.all()
 
-        return render(request, 'por/editdetails.html',{'form' : form,})
+        return render(request, 'por/editdetails.html',{'form' : form,'add_run_id' : request.GET.get('run_id'), 'stations' : stations})
 
     def post(self, request):
 
         menu_list(self, 'list32')
 
         for key in request.POST:
-            print(key)
-            value = request.POST[key]
-            print(value)
-
-        user_form = RunDetails.objects.filter(Q(id=self.request.POST.get('id'))).first()
-        form = EditDetailsForm(request.POST, instance=user_form)
-
+            print(key,request.POST[key])
+        
+        if request.POST.get('id') == '':
+            form = EditDetailsForm(request.POST)  
+            station_gpio = Station_GPIO_Mappings.objects.filter(Q(station_id=self.request.POST.get('station'))).first()
+        else:
+            user_form = RunDetails.objects.filter(Q(id=self.request.POST.get('id'))).first()
+            form = EditDetailsForm(request.POST, instance=user_form)
+    
         if form.is_valid():
-            user_form = form.save(commit=False)
-            user_form.last_updated_by = 0
-            user_form.last_update_date = datetime.now()
-            user_form.save()
+            if self.request.POST.get('btn_delete'):
+                print('deleting',request.POST.get('id'))
+                delete_form = RunDetails.objects.filter(Q(id=self.request.POST.get('id')))
+                delete_form.delete()
+            else:
+                user_form = form.save(commit=False)
+                if request.POST.get('id') == '':
+                    user_form.run_id = request.POST.get('add_run_id')
+                    user_form.station_id = request.POST.get('station')
+                    user_form.station_gpio_id = station_gpio.station_gpio
+                user_form.run_status = 'Closed'
+                user_form.last_updated_by = 0
+                user_form.last_update_date = datetime.now()
+                user_form.save()
         else:
             print("form invalid!!", form.errors)
-            return render(request, 'por/editdetails.html', {'form': form})
+            return render(request, 'por/editdetails.html', {'form': form,'stations' : stations})
 
-        return django.http.HttpResponseRedirect('/por/home/')
+        if request.POST.get('run_id') == '':
+            return django.http.HttpResponseRedirect('/por/home/?run_id=' + str(request.POST.get('add_run_id')))
+        else:
+             return django.http.HttpResponseRedirect('/por/home/?run_id=' + str(request.POST.get('run_id')))
         #return render(request, 'por/manual.html', {'station_table': station_table, 'station_number': station_number,})
 
 class StationView(FormView):
