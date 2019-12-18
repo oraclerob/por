@@ -1,5 +1,5 @@
 # signup/tables.py
-from datetime import datetime
+from datetime import datetime,timezone
 
 import django.db.models
 import django.utils.html
@@ -108,7 +108,10 @@ class RunHeaderTable(tables.Table):
         #fdate = datetime.strptime(value,'%Y-%m-%d %H:%M:%S')
         pst = pytz.timezone('Australia/Perth')
         value = value.astimezone(pst)
-        return mark_safe(value.strftime('%Y-%m-%d'))
+        if value > datetime.now(pst):
+            return mark_safe('<b style="color:red">' + value.strftime('%Y-%m-%d') + '</b>')
+            
+        return mark_safe('<b>' + value.strftime('%Y-%m-%d')  + '</b>')
 
     def render_end_date(self, value, record):
 
@@ -116,7 +119,10 @@ class RunHeaderTable(tables.Table):
         pst = pytz.timezone('Australia/Perth')
         value = value.astimezone(pst)
 
-        return mark_safe(value.strftime('%Y-%m-%d'))
+        if value < datetime.now(pst):
+            return mark_safe('<b style="color:red">' + value.strftime('%Y-%m-%d') + '</b>')
+
+        return mark_safe('<b>' + value.strftime('%Y-%m-%d') + '</b>')
 
     def render_last_run(self, value, record):
 
@@ -198,6 +204,17 @@ class StationTable(tables.Table):
     station_default_seconds = tables.Column(verbose_name='Default Time (seconds)')
     station_number = tables.Column(verbose_name='Station Number')
     status         = tables.Column(verbose_name='Status')
+    id             = tables.Column(verbose_name='GPIO #')
+
+    def render_id(self, value, record):
+        data = Stations.objects.filter(id=record.id)
+        gpio = Station_GPIO_Mappings.objects.filter(station_id=record.id).first()
+        if not gpio:
+            gpio_str = ''
+        else:
+            gpio_str = gpio.station_gpio 
+
+        return mark_safe(str(gpio_str))
 
     def render_station_number(self, value, record):
         data = Stations.objects.filter(id=record.id)

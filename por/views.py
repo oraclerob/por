@@ -416,6 +416,7 @@ class EditDetailsView(FormView):
             station_gpio = Station_GPIO_Mappings.objects.filter(Q(station_id=self.request.POST.get('station'))).first()
         else:
             user_form = RunDetails.objects.filter(Q(id=self.request.POST.get('id'))).first()
+            station_gpio = Station_GPIO_Mappings.objects.filter(Q(station_id=self.request.POST.get('station'))).first()
             form = EditDetailsForm(request.POST, instance=user_form)
     
         if form.is_valid():
@@ -430,6 +431,7 @@ class EditDetailsView(FormView):
                     user_form.station_id = request.POST.get('station')
                     user_form.station_gpio_id = station_gpio.station_gpio
                 user_form.run_status = 'Closed'
+                user_form.station_gpio_id = station_gpio.station_gpio
                 user_form.last_updated_by = 0
                 user_form.last_update_date = datetime.now()
                 user_form.save()
@@ -502,26 +504,33 @@ class EditStationView(FormView):
         init_session(self,request)
 
         form = Stations.objects.filter(Q(id=self.request.GET.get('id'))).first()
+        gpio = Station_GPIO_Mappings.objects.filter(station_id=request.GET.get('id')).first()
 
-        return render(request, 'por/editstation.html',{'form' : form,})
+        return render(request, 'por/editstation.html',{'form' : form,'gpio' : gpio})
 
     def post(self, request):
 
         menu_list(self, 'list31')
 
         for key in request.POST:
-            print(key)
-            value = request.POST[key]
-            print(value)
+            print(key,request.POST[key])
 
         user_form = Stations.objects.filter(Q(id=self.request.POST.get('id'))).first()
         form = EditStationForm(request.POST, instance=user_form)
+        gpio = Station_GPIO_Mappings.objects.filter(station_id=request.POST.get('id')).first()
+        new_gpio = Station_GPIO_Mappings.objects.filter(station_gpio=request.POST.get('gpio')).first()
 
         if form.is_valid():
             user_form = form.save(commit=False)
             user_form.last_updated_by = 0
             user_form.last_update_date = datetime.now()
             user_form.save()
+            ## Update the foreign keys
+            #RunDetails.objects.filter(Q(station_gpio=gpio.station_gpio)).update(station_gpio=new_gpio.station_gpio)
+            #Station_GPIO_Mappings.objects.filter(station_gpio=gpio.station_gpio).update(station_gpio=new_gpio.station_gpio)
+
+           
+          
         else:
             print("form invalid!!", form.errors)
             return render(request, 'por/editstation.html', {'form': form})
