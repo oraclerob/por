@@ -1,3 +1,12 @@
+#-----------------------------------------------------------------------------
+# Copyright (c) 2019, Rob Mascaro
+#
+# Distributed under the terms of the GNU General Public License (version 3or later)
+#
+# The full license is in the file LICENSE, distributed with this software.
+#
+#-----------------------------------------------------------------------------
+
 import django.contrib.auth.forms
 import django_filters.models
 from django import forms
