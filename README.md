@@ -16,9 +16,15 @@ If you would like to contribute, please get in touch!
 
 # Setup instructions
 1. Clone the repo
-2. Create a user por/por on your local database (you can change this in settings.py)
-3. Use Django to migrate the database (create the tables) 
-4. A "cron" job to run "retic_engine.py" at 1 minute intervals.
+2. Have a look at the settings.py and make sure the following are installed at least (you might need more or less - check errors):
+    'django_tables2',   #django-tables2
+    'widget_tweaks',    #django-widget-tweaks
+    'axes',             #django-axes
+    'django_filters'
+
+3. Create a user por/por on your local database (you can change this in settings.py)
+4. Use Django to migrate the database (create the tables) 
+5. A "cron" job to run "retic_engine.py" at 1 minute intervals.
 
 
 # TODO
