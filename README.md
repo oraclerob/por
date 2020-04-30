@@ -18,6 +18,7 @@ If you would like to contribute, please get in touch!
 1. Clone the repo
 2. Create a user por/por on your local database (you can change this in settings.py)
 3. Use Django to migrate the database (create the tables) 
+4. A "cron" job to run "retic_engine.py" at 1 minute intervals.
 
 
 # TODO
