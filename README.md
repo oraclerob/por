@@ -16,15 +16,15 @@ If you would like to contribute, please get in touch!
 
 # Setup instructions
 1. Clone the repo
-2. Have a look at the settings.py and make sure the following are installed at least (you might need more or less - check errors):
-    a) install RPI.GPIO
-    b) install gpiozero
-    c) python-dateutil
-    d) apt-get install python-mysqldb (for mysqlclient)
-    e) 'django_tables2',   #django-tables2
-    f)'widget_tweaks',    #django-widget-tweaks
-    g) 'axes',             #django-axes
-    h) 'django_filters'
+2. Have a look at the settings.py and make sure the following are installed at least (you might need more or less - check errors):  
+   &nbsp;   &nbsp;   &nbsp;   &nbsp;   &nbsp;  a) install RPI.GPIO  
+   &nbsp;   &nbsp;   &nbsp;   &nbsp;   &nbsp;  b) install gpiozero  
+   &nbsp;   &nbsp;   &nbsp;   &nbsp;   &nbsp;  c) python-dateutil  
+   &nbsp;   &nbsp;   &nbsp;   &nbsp;   &nbsp;  d) apt-get install python-mysqldb (for mysqlclient)  
+   &nbsp;   &nbsp;   &nbsp;   &nbsp;   &nbsp;  e) 'django_tables2',   # pip django-tables2   
+   &nbsp;   &nbsp;   &nbsp;   &nbsp;   &nbsp;  f) 'widget_tweaks',    # pip django-widget-tweaks  
+   &nbsp;   &nbsp;   &nbsp;   &nbsp;   &nbsp;  g) 'axes',             # pip django-axes  
+   &nbsp;   &nbsp;   &nbsp;   &nbsp;   &nbsp;  h) 'django_filters'  # pip django_filters  
 
 3. Create a user por/por on your local database (you can change this in settings.py)
 4. Use Django to migrate the database (create the tables) 
