@@ -289,9 +289,3 @@ class StationGPIOMappingsTable(tables.Table):
         model = Station_GPIO_Mappings
         template_name = 'django_tables2/bootstrap-responsive.html'
         attrs = {"class": "table table-striped"}
-        #exclude = ('id','venue_id','venue','created_by','creation_date','last_update_date','comments')
-        #fields = ('name',)
-        #order_by = 'drink_name'
-        #sequence = ('drink_name', 'drink_size', 'price', 'last_updated_by')
-        #attrs = {"class": "table table-striped"}
-        #empty_text = "There are no drinks defined for this venue..."
