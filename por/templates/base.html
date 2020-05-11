@@ -184,29 +184,28 @@
                 <!--<a href="#"> <i class="fa fa-dashboard fa-lg"></i> Dashboard </a>-->
             <!--</li>-->
 
-            <li  data-toggle="collapse" data-target="#menu1" class="{{request.session.menu1_active}} {{request.session.menu1_collapsed}}">
-                <a href="/por/home/" >
-                    <i class="fa fa-home fa-lg"></i> Home
-                </a>
+            <a href="/por/home/" style="color: inherit; text-decoration: none;"><li  data-toggle="collapse" data-target="#menu1" class="{{request.session.menu1_active}} {{request.session.menu1_collapsed}}">        
+                    <i class="fa fa-home fa-lg"  style="padding-left:1em"></i> Home        
             </li>
+            </a>
+          
+            <a href="/por/manual/"  style="color: inherit; text-decoration: none;">
+              <li  data-toggle="collapse" data-target="#menu2" class="{{request.session.menu2_active}} {{request.session.menu2_collapsed}}">
+                      <i class="fa fa-tint fa-lg"  style="padding-left:1em"></i> Manual Start
+              </li>
+            </a>
 
-            <li  data-toggle="collapse" data-target="#menu2" class="{{request.session.menu2_active}} {{request.session.menu2_collapsed}}">
-                <a href="/por/manual/" >
-                    <i class="fa fa-tint fa-lg"></i> Manual Start
-                </a>
-            </li>
+            <a href="/por/stations/" style="color: inherit; text-decoration: none;">
+              <li  data-toggle="collapse" data-target="#menu3" class="{{request.session.menu3_active}} {{request.session.menu3_collapsed}}">
+                      <i class="fa fa-edit fa-lg" style="padding-left:1em"></i> Stations    
+              </li>
+              </a>
 
-            <li  data-toggle="collapse" data-target="#menu3" class="{{request.session.menu3_active}} {{request.session.menu3_collapsed}}">
-                <a href="/por/stations/" >
-                    <i class="fa fa-edit fa-lg"></i> Stations
-                </a>
-            </li>
-
-            <li  data-toggle="collapse" data-target="#menu4" class="{{request.session.menu4_active}} {{request.session.menu4_collapsed}}">
-                <a href="/por/settings/">
-                    <i class="fa fa-wrench fa-lg"></i> Settings
-                </a>
-            </li>
+              <a href="/por/settings/"  <a href="/por/stations/" style="color: inherit; text-decoration: none;">
+              <li  data-toggle="collapse" data-target="#menu4" class="{{request.session.menu4_active}} {{request.session.menu4_collapsed}}">
+                      <i class="fa fa-wrench fa-lg" style="padding-left:1em"></i> Settings
+              </li>
+              </a>
 
         </ul>
     </div>
