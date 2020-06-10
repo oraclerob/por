@@ -1,9 +1,9 @@
 # POR
 Pi Open Retic - A web based way to control your sprinklers or reticulation.
 
-This project I started as a way to learn Python and Django using a PI Raspberry so some of the coding will not be up to scratch. By connecting to the GPIO you can add run cycles and stations and there is a "ReticEngine" run by cron which will pick up when to water. It even checks the local BOM stations to see if has been raining and will turn off once a configurable threshold is reached.
+I started the project as a way to learn Python and Django using a PI Raspberry so apologies in advance for some of the coding practices! By connecting to the GPIO you can add run cycles and stations and there is a "ReticEngine" run by cron which will pick up when to water. It even checks the local Australian BOM stations to see if has been raining and will turn off once a configurable threshold is reached.
 
-This project is built on a Bootstrap 3 Django implementation. It also uses the excellent django-tables import for most of the data formatting. When setting up, there might be a bit of meta data I've forgotten to include (although the Models should create the base tables at least. Please let me know if there are issues.
+This project is built on a Bootstrap 3 Django implementation. It also uses the excellent django-tables import for most of the data formatting. When setting up, there might be a bit of meta data I've forgotten to include (although the Models should create the base tables at least). The install instructions at the moment assume a good knowledge of Django setup hopefully this will change in future revisions.  Please let me know if there are issues.
 
 If you would like to contribute, please get in touch!
 
@@ -26,6 +26,7 @@ If you would like to contribute, please get in touch!
 
 # Setup instructions
 1. Clone the repo
+2. Ensure you have Python 3.6+ and Django 2+ installed.
 2. Have a look at the settings.py and make sure the following are installed at least (you might need more or less - check errors):  
    &nbsp;   &nbsp;   &nbsp;   &nbsp;   &nbsp;  a) pip install RPI.GPIO  
    &nbsp;   &nbsp;   &nbsp;   &nbsp;   &nbsp;  b) pip install gpiozero  
@@ -33,8 +34,7 @@ If you would like to contribute, please get in touch!
    &nbsp;   &nbsp;   &nbsp;   &nbsp;   &nbsp;  d) apt-get install python-mysqldb (for mysqlclient)  
    &nbsp;   &nbsp;   &nbsp;   &nbsp;   &nbsp;  e) pip install django_tables2  
    &nbsp;   &nbsp;   &nbsp;   &nbsp;   &nbsp;  f) pip install widget_tweaks  
-   &nbsp;   &nbsp;   &nbsp;   &nbsp;   &nbsp;  g) pip install axes  
-   &nbsp;   &nbsp;   &nbsp;   &nbsp;   &nbsp;  h) pip install django_filters  
+   &nbsp;   &nbsp;   &nbsp;   &nbsp;   &nbsp;  g) pip install django_filters  
 
 3. Create a user por/por on your local database (you can change this in settings.py)
 4. Use Django to migrate the database (create the tables) 
@@ -42,11 +42,12 @@ If you would like to contribute, please get in touch!
 
 
 # TODO
-1. A screen for the addition of weather stations - it's rather hard coded at the moment.
-2. A screen to Add Stations - this is done manually but you can configure the GPIO assigments later.
-3. Some performance improvements.
-4. Remove redundant code - there is code for sign in, REST calls etc., which might not be needed.
-4. Lots of other little things.
+1. A more thorough installation guide.
+2. A screen for the addition of weather stations - it's rather hard coded at the moment.
+3. A screen to Add Stations - this is done manually but you can configure the GPIO assigments later.
+4. Some performance improvements.
+5. Remove redundant code - there is code for sign in, REST calls etc., which might not be needed.
+6. Lots of other little things.
 
 # Working Screen
 ![The home page](image.png)
