@@ -147,18 +147,17 @@
        <span class="collapse navbar-collapse">
 
           <ul class="nav navbar-nav navbar-right">
-            {% if user.is_authenticated %}
+          {% if user.is_authenticated %}
 
-        
             <li class="dropdown">
               <a  role="button" data-toggle="dropdown" href="#"><i class="glyphicon glyphicon-user"></i> {{ request.user.get_short_name }}<span class="caret"></span></a>
               <ul id="g-account-menu" class="dropdown-menu" role="menu">
                 <li><a href="/por/accounts/password/reset/">Change Password</a></li>
               </ul>
              </li>
-        
+           
              <li><a href="/por/logout"><i class="glyphicon glyphicon-lock"></i> Logout</a></li>
-          {% else %}
+           {% else %}
 
         
           {% endif %}
@@ -180,28 +179,25 @@
     <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
     <div class="menu-list">
         <ul id="menu-content" class="menu-content">
-            <!--<li>-->
-                <!--<a href="#"> <i class="fa fa-dashboard fa-lg"></i> Dashboard </a>-->
-            <!--</li>-->
 
-            <a href="/por/home/" style="color: inherit; text-decoration: none;"><li  data-toggle="collapse" data-target="#menu1" class="{{request.session.menu1_active}} {{request.session.menu1_collapsed}}">        
+            <a href="/por/home/" style="color: white; text-decoration: none;"><li  data-toggle="collapse" data-target="#menu1" class="{{request.session.menu1_active}} {{request.session.menu1_collapsed}}">        
                     <i class="fa fa-home fa-lg"  style="padding-left:1em"></i> Home        
             </li>
             </a>
           
-            <a href="/por/manual/"  style="color: inherit; text-decoration: none;">
+            <a href="/por/manual/"  style="color: white; text-decoration: none;">
               <li  data-toggle="collapse" data-target="#menu2" class="{{request.session.menu2_active}} {{request.session.menu2_collapsed}}">
                       <i class="fa fa-tint fa-lg"  style="padding-left:1em"></i> Manual Start
               </li>
             </a>
 
-            <a href="/por/stations/" style="color: inherit; text-decoration: none;">
+            <a href="/por/stations/" style="color: white; text-decoration: none;">
               <li  data-toggle="collapse" data-target="#menu3" class="{{request.session.menu3_active}} {{request.session.menu3_collapsed}}">
                       <i class="fa fa-edit fa-lg" style="padding-left:1em"></i> Stations    
               </li>
               </a>
 
-              <a href="/por/settings/"  <a href="/por/stations/" style="color: inherit; text-decoration: none;">
+              <a href="/por/settings/" style="color: white; text-decoration: none;">
               <li  data-toggle="collapse" data-target="#menu4" class="{{request.session.menu4_active}} {{request.session.menu4_collapsed}}">
                       <i class="fa fa-wrench fa-lg" style="padding-left:1em"></i> Settings
               </li>
@@ -231,8 +227,10 @@
 </div>
 </div>
 <script>
-$("a li").on("click", function (e) {
-  toastr.info("<div class=\"fa fa-spinner fa-spin\"></div> Loading.... ", "");
+$(document).ready(function() {
+$(".menu-list a li").on("click", function (e) {
+  show_spinner("Loading...");
+});
 });
 </script>
 </body>

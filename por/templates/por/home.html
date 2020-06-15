@@ -5,44 +5,11 @@
 
 <div class="row">
 
-    <!--<div class="col-md-4">-->
-        <!---->
-        <!--<div class="panel panel-primary">-->
-            <!--<div class="panel-heading" align="center"><h4>Retic Status</h4></div>-->
-                <!--<div class="panel-body">-->
-
-                     <!--&lt;!&ndash;<form id="search_form" method="get" action="" class="form form-inline">&ndash;&gt;-->
-                         <!--&lt;!&ndash;<div class="input-group">&ndash;&gt;-->
-                            <!--&lt;!&ndash;<span class="input-group-addon" style=""><span class="glyphicon glyphicon-search"></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;</span>&ndash;&gt;-->
-                             <!--&lt;!&ndash;<input class="form-control" placeholder="Search..." id="search" maxlength="100" name="search" value="" type="text" />&ndash;&gt;-->
-                         <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</form>&ndash;&gt;-->
-
-                    <!--<table class="table table-responsive table-striped table-sm">-->
-                        <!--<th>Station</th>-->
-                        <!--<th>Status</th>-->
-                        <!--<tr><td>Run Cycle</td><td>         Enabled</span>'</td></tr>-->
-                    <!--</table>-->
-
-            <!--</div>-->
-        <!--</div>-->
-     <!--</div>-->
-
-
     <div class="col-md-6">
 
         <div class="panel panel-info">
             <div class="panel-heading" align="center"><h4>Run Cycles</h4></div>
                 <div class="panel-body">
-
-                     <!--<form id="search_form" method="get" action="" class="form form-inline">-->
-                         <!--<div class="input-group">-->
-                            <!--<span class="input-group-addon" style=""><span class="glyphicon glyphicon-search"></span>-->
-                            <!--</span>-->
-                             <!--<input class="form-control" placeholder="Search..." id="search" maxlength="100" name="search" value="" type="text" />-->
-                         <!--</div>-->
-                    <!--</form>-->
 
                     {% render_table headertable %}
 
@@ -102,26 +69,6 @@
 <script>
 $( document ).ready(function() {
 
-    toastr.clear();
-
-    toastr.options = {
-                              "closeButton": true,
-                              "debug": false,
-                              "newestOnTop": false,
-                              "progressBar": false,
-                              "positionClass": "toast-top-center",
-                              "preventDuplicates": true,
-                              "onclick": null,
-                              //"showDuration": "300",
-                              //"hideDuration": "1000",
-                              "timeOut": "0",
-                              "extendedTimeOut": "0",
-                              "showEasing": "swing",
-                              "hideEasing": "linear",
-                              "showMethod": "fadeIn",
-                              "hideMethod": "fadeOut",
-                            };
-
      Messenger.options = {
                 extraClasses: 'messenger-fixed messenger-on-top',
                 theme: 'flat'
@@ -131,21 +78,20 @@ $( document ).ready(function() {
 
     $('input[type="radio"]').on('click change', function(e) {
 
-        $("#{{rchecked}}").attr('checked', false);
-
-        toastr.info("<div class=\"fa fa-spinner fa-spin\"></div> Loading.... ", "");
+    $("#{{rchecked}}").attr('checked', false);
     
-    });
-
-    $("a").on("click", function (e) {
-
-        $("#{{rchecked}}").attr('checked', false);
-        toastr.info("<div class=\"fa fa-spinner fa-spin\"></div> Loading.... ", "");
-
-    });
-
+    }); 
 
 });
+
+
+$("td a").on("click", function (e) {
+
+  $("#{{rchecked}}").attr('checked', false);
+  show_spinner("Loading...");
+
+});
+
 
 </script>
 
