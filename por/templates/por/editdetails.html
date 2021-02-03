@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+ <div class="panel panel-default">
+
+   <div class="panel-heading" align="center"><h4>Edit Station Run Time</h4></div>
+     <div class="panel-body">
+
+            {% if form.errors %}
+            <!--{% for field in form %}-->
+                <!--{% for error in field.errors %}-->
+                    <!--<div class="alert alert-danger">-->
+                        <!--<strong>{{ error|escape }}</strong>-->
+                    <!--</div>-->
+                <!--{% endfor %}-->
+            <!--{% endfor %}-->
+             <div class="alert alert-danger">
+             {{form.errors}}
+             </div>
+
+            {% endif %}
+
+               <form id="editdetails" method="post" action="" class="form">
+                  {% csrf_token %}
+
+                     <div class="form-group">
+                        <label>Station Number</label>
+                        <select class="form-control" id="station" name="station">
+                              {% for r in stations %}
+                                <option value="{{r.id}}" {% if r.station_number|stringformat:"s" == form.station|stringformat:"s" %}selected{% endif %}>{{r.station_number}}</option>
+                              {% endfor %}
+                          </select>
+                      </div>
+
+                      <div class="form-group">
+                        <label>Time (in seconds):</label>
+                         <input class="form-control" name="station_seconds" id="station_seconds" type="number" step="1" value="{{form.station_seconds}}"/>
+                      </div>
+
+                     <div class="form-group">
+                        <dt><input style="float:left; width: auto" id="btn_edit" name="btn_edit" class="btn btn-info" type="submit" value="Edit"/></dt>
+                        <dt><input style="float:right; width: auto" id="btn_delete" name="btn_delete" class="btn btn-danger" type="submit" value="Delete Station"/></dt>
+                     </div>
+
+                     <input type="hidden" id="id "name="id" value="{{form.id}}" />
+                     <input type="hidden" id="run_id "name="run_id" value="{{form.run_id}}" />
+                     <input type="hidden" id="add_run_id "name="add_run_id" value="{{add_run_id}}" />
+
+                </form>
+         </div>
+       </div>
+
+
+
+<script>
+$( document ).ready(function() {
+
+     Messenger.options = {
+                extraClasses: 'messenger-fixed messenger-on-top',
+                theme: 'flat'
+            }
+
+
+     $('#btn_start').click(function(){
+	    msg = Messenger().post({
+              message: "Manually Started station #" + document.getElementById('station_number').value + " for " + document.getElementById('seconds').value + " seconds please wait...",
+              type: 'success',
+              hideAfter: 3,
+              showCloseButton: true,
+           });
+      });
+
+     $('#btn_stop').click(function(){
+	    msg = Messenger().post({
+              message: "Stopping all stations, please wait...",
+              type: 'success',
+              hideAfter: 3,
+              showCloseButton: true,
+           });
+     });
+
+      $('#btn_systest').click(function(){
+	    msg = Messenger().post({
+              message: "Running system test for " + document.getElementById('seconds').value + " seconds please wait...",
+              type: 'success',
+              hideAfter: 3,
+              showCloseButton: true,
+           });
+      });
+
+       $('#btn_sysstop').click(function(){
+	    msg = Messenger().post({
+              message: "Stopping all stations, please wait...",
+              type: 'success',
+              hideAfter: 3,
+              showCloseButton: true,
+           });
+     });
+
+
+});
+
+
+ </script>
+
+
+
+
+
+{% endblock %}

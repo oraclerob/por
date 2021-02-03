@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!--  <h2>Welcome Home, {{ user.username }}!</h2>
+
+<div id="topic" class="upvote">
+    <a class="upvote"></a>
+    <span class="count">0</span>
+    <a class="downvote"></a>
+    <a class="star"></a>
+</div>
+-->
+
+
+ <div class="panel panel-info" style="max-width: 800px ;margin:10px auto">
+                    <div class="panel-heading" align="center"><h4>Edit Settings</h4></div>
+                        <div class="panel-body">
+
+  {% if form.errors %}
+    {% for field in form %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{field.name}} : {{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+  {% endif %}
+
+<form id="settings" method="post" action="" class="form">
+  {% csrf_token %}
+
+
+     <div class="form-group">
+                          <label for="Enabled">Enable Rain Detection</label>
+                            <select class="form-control" name="rain_detection" >
+                              <option value="0" {% if form.rain_detection == 0 %}selected{% endif %}>Off</option>
+                              <option value="1" {% if form.rain_detection == 1 %}selected{% endif %}>On</option>
+                          </select>
+     </div>
+
+    <div class="form-group">
+                          <label for="Enabled">BOM Location</label>
+                            <select class="form-control" name="bom_url" >
+                              <option value="http://reg.bom.gov.au/fwo/IDW60901/IDW60901.94608.json" {% if form.bom_url == "http://reg.bom.gov.au/fwo/IDW60901/IDW60901.94608.json" %}selected{% endif %}>Perth</option>
+                              <option value="http://www.bom.gov.au/fwo/IDW60901/IDW60901.94610.json" {% if form.bom_url == "http://www.bom.gov.au/fwo/IDW60901/IDW60901.94610.json" %}selected{% endif %}>Perth Airport</option>
+                              <option value="http://www.bom.gov.au/fwo/IDW60901/IDW60901.94609.json" {% if form.bom_url == "http://www.bom.gov.au/fwo/IDW60901/IDW60901.94609.json" %}selected{% endif %}>Jandakot</option>
+                              <option value="http://www.bom.gov.au/fwo/IDW60901/IDW60901.94605.json" {% if form.bom_url == "http://www.bom.gov.au/fwo/IDW60901/IDW60901.94605.json" %}selected{% endif %}>Mandurah</option>
+                              <option value="http://www.bom.gov.au/fwo/IDW60901/IDW60901.94614.json" {% if form.bom_url == "http://www.bom.gov.au/fwo/IDW60901/IDW60901.94614.json" %}selected{% endif %}>Swanborne</option>
+                          </select>
+     </div>
+
+     <div class="form-group">
+                          <label for="Enabled">Rain Threshold (mm)</label>
+                            <select class="form-control" name="rain_threshold" >
+                              <option value="0" {% if form.rain_threshold == 0 %}selected{% endif %}>0</option>
+                              <option value="1" {% if form.rain_threshold == 1 %}selected{% endif %}>1</option>
+                              <option value="2" {% if form.rain_threshold == 2 %}selected{% endif %}>2</option>
+                              <option value="3" {% if form.rain_threshold == 3 %}selected{% endif %}>3</option>
+                              <option value="4" {% if form.rain_threshold == 4 %}selected{% endif %}>4</option>
+                              <option value="5" {% if form.rain_threshold == 5 %}selected{% endif %}>5</option>
+                              <option value="6" {% if form.rain_threshold == 6 %}selected{% endif %}>6</option>
+                              <option value="7" {% if form.rain_threshold == 7 %}selected{% endif %}>7</option>
+                              <option value="8" {% if form.rain_threshold == 8 %}selected{% endif %}>8</option>
+                              <option value="9" {% if form.rain_threshold == 9 %}selected{% endif %}>9</option>
+                              <option value="10" {% if form.rain_threshold == 10 %}selected{% endif %}>10</option>
+                          </select>
+     </div>
+
+
+
+
+    <div class="form-group">
+       <dt><input  style="float:left; width: auto" id="btn_rain" name="btn_rain" class="btn btn-info" type="submit" value="Edit Settings"/></dt>
+        <dt><input style="float:right; width: auto" id="btn_runbom" name="btn_runbom" class="btn btn-danger" type="submit" value="Refresh BOM Data"/></dt>
+    </div>
+
+
+
+    <input class="form-control" type="hidden" name="id" id="id" value="{% if form.id is None %}1{% else%}{{form.id}}{% endif %}"/>
+
+</form>
+
+
+
+</div>
+</div>
+
+<script>
+$( document ).ready(function() {
+
+    toastr.clear();
+
+    toastr.options = {
+                              "closeButton": true,
+                              "debug": false,
+                              "newestOnTop": false,
+                              "progressBar": false,
+                              "positionClass": "toast-top-center",
+                              "preventDuplicates": true,
+                              "onclick": null,
+                              //"showDuration": "300",
+                              //"hideDuration": "1000",
+                              "timeOut": "0",
+                              "extendedTimeOut": "0",
+                              "showEasing": "swing",
+                              "hideEasing": "linear",
+                              "showMethod": "fadeIn",
+                              "hideMethod": "fadeOut",
+                            };
+
+     Messenger.options = {
+                extraClasses: 'messenger-fixed messenger-on-top',
+                theme: 'flat'
+            }
+
+    $("#btn_runbom").on("click", function (e) {
+
+        toastr.info("<div class=\"fa fa-spinner fa-spin\"></div> Refreshing BOM Data.... ", "");
+
+    });
+
+
+
+
+});
+
+</script>
+
+
+
+
+{% endblock %}

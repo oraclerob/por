@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load render_table from django_tables2 %}
+{% block content %}
+
+
+<div class="row">
+
+    <div class="col-md-6">
+
+        <div class="panel panel-info">
+            <div class="panel-heading" align="center"><h4>Run Cycles</h4></div>
+                <div class="panel-body">
+
+                    {% render_table headertable %}
+
+                    <a class="btn btn-info" role="button" href="/{{ myappname }}/addcycle/">Add Run Cycle</a>
+
+
+            </div>
+        </div>
+     </div>
+    <div class="col-md-6">
+
+        <div class="panel panel-success">
+            <div class="panel-heading" align="center"><h4>Current Weather ({{weather.name}})</h4></div>
+                <div class="panel-body">
+
+
+                    {% render_table weathertable %}
+
+            </div>
+        </div>
+     </div>
+</div>
+  <div class="row">
+
+     <div class="col-md-6">
+
+        <div class="panel panel-warning">
+            <div class="panel-heading" align="center"><h4>Run Day ({{run_name}})</h4></div>
+                <div class="panel-body">
+
+
+                    {% render_table rundaytable %}
+                    <a class="btn btn-info" role="button" href="/{{ myappname }}/addday/?run_id={{run_id}}">Add Day</a>
+            </div>
+        </div>
+     </div>
+
+
+
+    <div class="col-md-6">
+        <div class="panel panel-danger">
+            <div class="panel-heading" align="center"><h4>Run Details ({{run_name}})</h4></div>
+                <div class="panel-body">
+
+                    {% render_table detailtable %}
+                    <a class="btn btn-info" role="button" href="/{{ myappname }}/addstation/?run_id={{run_id}}">Add Station</a>
+
+                </div>
+            </div>
+        </div>
+
+
+</div>
+
+
+
+<script>
+$( document ).ready(function() {
+
+     Messenger.options = {
+                extraClasses: 'messenger-fixed messenger-on-top',
+                theme: 'flat'
+            }
+
+    $("#{{rchecked}}").attr('checked', true);
+
+    $('input[type="radio"]').on('click change', function(e) {
+
+    $("#{{rchecked}}").attr('checked', false);
+    
+    }); 
+
+});
+
+
+$("td a").on("click", function (e) {
+
+  $("#{{rchecked}}").attr('checked', false);
+  show_spinner("Loading...");
+
+});
+
+
+</script>
+
+{% endblock %}

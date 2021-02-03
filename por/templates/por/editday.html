@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+ <div class="panel panel-default">
+
+   <div class="panel-heading" align="center"><h4>Edit Run</h4></div>
+     <div class="panel-body">
+
+            {% if form.errors %}
+            <!--{% for field in form %}-->
+                <!--{% for error in field.errors %}-->
+                    <!--<div class="alert alert-danger">-->
+                        <!--<strong>{{ error|escape }}</strong>-->
+                    <!--</div>-->
+                <!--{% endfor %}-->
+            <!--{% endfor %}-->
+             <div class="alert alert-danger">
+             {{form.errors}}
+             </div>
+
+            {% endif %}
+
+               <form id="editrun" method="post" action="" class="form">
+                  {% csrf_token %}
+
+                      <div class="form-group">
+                          <label for="RunName">Run Day</label>
+                          <select class="form-control" id="weekday" name="weekday" >
+                              <option {% if form.weekday == 'Monday' %}selected{% endif %}>Monday</option>
+                              <option {% if form.weekday == 'Tuesday' %}selected{% endif %}>Tuesday</option>
+                              <option {% if form.weekday == 'Wednesday' %}selected{% endif %}>Wednesday</option>
+                              <option {% if form.weekday == 'Thursday' %}selected{% endif %}>Thursday</option>
+                              <option {% if form.weekday == 'Friday' %}selected{% endif %}>Friday</option>
+                              <option {% if form.weekday == 'Saturday' %}selected{% endif %}>Saturday</option>
+                              <option {% if form.weekday == 'Sunday' %}selected{% endif %}>Sunday</option>
+                          </select>
+                      </div>
+
+                   <!-- <div class="form-group">
+                        <label>Start Time (Hour/Minute):</label>
+                         <input class="form-control" name="start_time" id="start_time" type="number" step="1" value="{{form.start_time}}"/>
+                   </div> -->
+
+                   <div class="form-group">
+                        <label>Start Time (24 Hours)</label>
+                    <div class="input-group date">
+                       <span class="input-group-addon"><span class="fa fa-calendar"></span>
+                      </span>
+                       <input type="text" class="form-control" name="xstart_time" id="datetimepicker1" data-target-input="nearest" data-target="#datetimepicker1" data-toggle="datetimepicker" value="{{start_time}}"/>
+                   </div>
+                   </div>
+
+                     <div class="form-group">
+                        <dt><input style="float:left; width: auto" id="btn_edit" name="btn_edit" class="btn btn-info" type="submit" value="Edit"/></dt>
+                        <dt><input style="float:right; width: auto" id="btn_delete" name="btn_delete" class="btn btn-danger" type="submit" value="Delete Run"/></dt>
+                     </div>
+
+                     
+
+
+                      <input type="hidden" id="id "name="id" value="{{form.id}}" />
+                      <input type="hidden" id="run_id "name="run_id" value="{{form.run_id}}" />
+                      <input type="hidden" id="start_time "name="start_time" value="{{form.start_time}}" />
+                    </form>
+
+
+                </form>
+
+                </form>
+         </div>
+       </div>
+
+
+
+<script>
+$( document ).ready(function() {
+
+     Messenger.options = {
+                extraClasses: 'messenger-fixed messenger-on-top',
+                theme: 'flat'
+            }
+
+
+     $('#btn_start').click(function(){
+	    msg = Messenger().post({
+              message: "Manually Started station #" + document.getElementById('station_number').value + " for " + document.getElementById('seconds').value + " seconds please wait...",
+              type: 'success',
+              hideAfter: 3,
+              showCloseButton: true,
+           });
+      });
+
+     $('#btn_stop').click(function(){
+	    msg = Messenger().post({
+              message: "Stopping all stations, please wait...",
+              type: 'success',
+              hideAfter: 3,
+              showCloseButton: true,
+           });
+     });
+
+      $('#btn_systest').click(function(){
+	    msg = Messenger().post({
+              message: "Running system test for " + document.getElementById('seconds').value + " seconds please wait...",
+              type: 'success',
+              hideAfter: 3,
+              showCloseButton: true,
+           });
+      });
+
+       $('#btn_sysstop').click(function(){
+	    msg = Messenger().post({
+              message: "Stopping all stations, please wait...",
+              type: 'success',
+              hideAfter: 3,
+              showCloseButton: true,
+           });
+     });
+
+
+});
+
+$(function () {
+    $("#datetimepicker1").datetimepicker({
+      format: 'H:mm',
+    });
+    $("#datetimepicker2").datetimepicker({
+      format: 'YYYY-MM-DD',
+    });
+  });
+
+
+ </script>
+
+
+
+
+
+{% endblock %}

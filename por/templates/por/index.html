@@ -1,0 +1,20 @@
+{% load crispy_forms_tags %}
+{% load static %}
+{% if not user.is_authenticated %}
+<a href="{% url 'login' %}" class="btn btn-default navbar-btn">Login</a>
+{% else %}
+<a href="{% url 'logout' %}" class="btn btn-default navbar-btn">Logout</a>
+{% endif %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href='{% static "bootstrap/css/bootstrap.css" %}'>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                {% crispy form %}
+            </div>
+        </div>
+    </body>
+</html>

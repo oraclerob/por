@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load render_table from django_tables2 %}
+{% block content %}
+
+
+<div class="row">
+
+    <div class="col-md-3">
+
+
+
+        <div class="panel panel-primary">
+            <div class="panel-heading" align="center"><h4>Stations</h4></div>
+                <div class="panel-body">
+
+                    <form id="stationform" method="post">
+                    {% csrf_token %}
+
+                    {% render_table table %}
+
+                    </form>
+
+            </div>
+        </div>
+     </div>
+
+</div>
+
+<script>
+
+function handleClick(id) {
+        $('#stationform').append('<input type="hidden" name="station_checked" value="' + id +'" />');
+        $('#stationform').submit();
+        toastr.info("<div class=\"fa fa-spinner fa-spin\"></div> Updating.... ", "");
+    }
+
+$( document ).ready(function() {
+
+    toastr.clear();
+
+    toastr.options = {
+                              "closeButton": true,
+                              "debug": false,
+                              "newestOnTop": false,
+                              "progressBar": false,
+                              "positionClass": "toast-top-center",
+                              "preventDuplicates": true,
+                              "onclick": null,
+                              //"showDuration": "300",
+                              //"hideDuration": "1000",
+                              "timeOut": "0",
+                              "extendedTimeOut": "0",
+                              "showEasing": "swing",
+                              "hideEasing": "linear",
+                              "showMethod": "fadeIn",
+                              "hideMethod": "fadeOut",
+                            };
+
+     Messenger.options = {
+                extraClasses: 'messenger-fixed messenger-on-top',
+                theme: 'flat'
+            }
+
+
+});
+</script>
+
+{% endblock %}

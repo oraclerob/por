@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block content %}
+<form method="post" action="" class="wide" novalidate>
+  {% csrf_token %}
+  <dl>
+    <div class="modal-dialog">
+      <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">Sign up and Register</h4>
+            </div>
+              <div class="modal-body">
+                  {% if form.errors %}
+                        <div id="form-error" class="alert alert-danger">
+                            <p>The operation could not be performed because one or more error(s) occurred.<br />Please resubmit the form after making the following changes:</p>
+                            <ul>
+                            {% for field in form %}
+                              {% if field.errors %}
+                            <li>{{ field.errors|striptags }}</li>
+                              {% endif %}
+                            {% endfor %}
+                            </ul>
+                        </div>
+                  {% endif %}
+                 <div class="form-group" style="display:none">
+                  <dt>
+                    <label for="id_username">Username:*</label>
+                  </dt>
+                  <dd>{{ form.username|add_class:"form-control" }}</dd>
+                 </div>
+
+                <div class="form-group">
+                <dt>
+                  <label for="id_email">Email address*:</label>
+                 </dt>
+                <dd>{{ form.email |add_class:"form-control"|attr:"required=true"}}</dd>
+
+                </div>
+
+                <div class="form-group" style="">
+                  <dt>
+                    <label for="id_first_name">First Name:*</label>
+                  </dt>
+                  <dd>{{ form.first_name|add_class:"form-control" }}</dd>
+                 </div>
+
+                 <div class="form-group" style="">
+                  <dt>
+                    <label for="id_last_name">Last Name:*</label>
+                  </dt>
+                  <dd>{{ form.last_name|add_class:"form-control" }}</dd>
+                 </div>
+
+
+                <div class="form-group">
+                <dt>
+                  <label for="id_password1">Password:*</label>
+                 </dt>
+
+                <dd>{{ form.password1|add_class:"form-control" }}</dd>
+                </div>
+                <div class="form-group">
+                <dt>
+                  <label for="id_password2">Password (type again):*</label>
+                 </dt>
+
+                <dd>{{ form.password2|add_class:"form-control" }}</dd>
+                </div>
+                 <div class="form-group">
+                   <script src='https://www.google.com/recaptcha/api.js'></script>
+                   <div class="g-recaptcha" data-sitekey="6Ldlw1kUAAAAACo2CDBrK09zPoSSNAK-00_Ql-Md" data-callback="enableBtn"></div>
+                 </div>
+
+              <div class="form-group">
+                <dt><input id="button1" class="btn btn-info" type="submit" value="Sign up" /></dt>
+              </div>
+         </div>
+
+      </div>
+    </div>
+  </dl>    
+</form>
+<script>
+
+  document.getElementById("button1").disabled = true;
+
+  function enableBtn(){
+      document.getElementById("button1").disabled = false;
+  }
+
+$(document).ready(function()
+{
+  $('#id_email').blur(function(e)
+  {
+    var email_address = $('#id_email').val();
+    $('#id_username').val(email_address);
+   });
+});
+</script>
+
+{% endblock %}

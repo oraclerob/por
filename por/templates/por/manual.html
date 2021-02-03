@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+ <div class="panel panel-info">
+
+   <div class="panel-heading" align="center"><h4>Manual Start</h4></div>
+     <div class="panel-body">
+
+            {% if form.errors %}
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
+            {% endif %}
+
+                <form id="manual" method="post" action="" class="form">
+                  {% csrf_token %}
+
+
+                     <div class="form-group">
+                          <label for="station">Station</label>
+                          <select class="form-control" id="station_number" name="station_number" >
+                            {% for x in station_table %}
+                                <option value="{{ x.station_number }}">{{ x.station_number }}</option>
+                            {% endfor %}
+                          </select>
+                      </div>
+
+                    <div class="form-group">
+                        <label>Time (in seconds):</label>
+                         <input class="form-control" name="seconds" id="seconds" type="number" step="1" value="5"/>
+                      </div>
+
+                     <div class="form-group">
+                        <dt><input style="float:left; width: auto" id="btn_start" name="btn_start" class="btn btn-info" type="submit" value="start"/></dt>
+                        <dt><input style="float:right; width: auto" id="btn_stop" name="btn_stop" class="btn btn-danger" type="submit" value="stop"/></dt>
+                     </div>
+
+
+
+                </form>
+         </div>
+       </div>
+
+
+
+
+
+ <div class="panel panel-warning">
+
+   <div class="panel-heading" align="center"><h4>System Test</h4></div>
+    <div class="panel-body">
+
+                {% if form.errors %}
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+
+                {% endif %}
+
+            <form id="systemtest" method="post" action="" class="form">
+              {% csrf_token %}
+
+
+                <div class="form-group">
+                    <label>Time (in seconds):</label>
+                     <input class="form-control" name="sysseconds" id="sysseconds" type="number" step="1" value="5"/>
+                  </div>
+
+                 <div class="form-group">
+                    <dt><input style="float:left; width: auto" id="btn_systest" name="btn_systest" class="btn btn-info" type="submit" value="System Test Start"/></dt>
+                    <dt><input style="float:right; width: auto" id="btn_sysstop" name="btn_sysstop" class="btn btn-danger" type="submit" value="System Test Stop"/></dt>
+                 </div>
+
+
+
+             </form>
+
+
+
+        </div>
+    </div>
+
+
+
+
+<script>
+$( document ).ready(function() {
+
+     Messenger.options = {
+                extraClasses: 'messenger-fixed messenger-on-top',
+                theme: 'flat'
+            }
+
+
+     $('#btn_start').click(function(){
+	    msg = Messenger().post({
+              message: "Manually Started station #" + document.getElementById('station_number').value + " for " + document.getElementById('seconds').value + " seconds please wait...",
+              type: 'success',
+              hideAfter: 3,
+              showCloseButton: true,
+           });
+      });
+
+     $('#btn_stop').click(function(){
+	    msg = Messenger().post({
+              message: "Stopping all stations, please wait...",
+              type: 'success',
+              hideAfter: 3,
+              showCloseButton: true,
+           });
+     });
+
+      $('#btn_systest').click(function(){
+	    msg = Messenger().post({
+              message: "Running system test for " + document.getElementById('seconds').value + " seconds please wait...",
+              type: 'success',
+              hideAfter: 3,
+              showCloseButton: true,
+           });
+      });
+
+       $('#btn_sysstop').click(function(){
+	    msg = Messenger().post({
+              message: "Stopping all stations, please wait...",
+              type: 'success',
+              hideAfter: 3,
+              showCloseButton: true,
+           });
+     });
+
+
+});
+
+
+ </script>
+
+
+
+
+
+{% endblock %}
