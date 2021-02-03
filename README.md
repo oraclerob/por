@@ -1,9 +1,9 @@
 # POR
 Pi Open Retic - A web based way to control your sprinklers or reticulation.
 
-This project I started as a way to learn Python and Django using a PI Raspberry so some of the coding will not be up to scratch. By connecting to the GPIO you can add run cycles and stations and there is a "ReticEngine" run by cron which will pick up when to water. It even checks the local BOM stations to see if has been raining and will turn off once a configurable threshold is reached.
+This project was started as a way to learn Python and Django using a PI Raspberry. By connecting to the GPIO you can add run cycles and stations and there is a "ReticEngine" run by cron which will pick up when to water. It even checks the local BOM stations to see if has been raining and will turn off once a configurable threshold is reached.
 
-This project is built on a Bootstrap 3 Django implementation. It also uses the excellent django-tables import for most of the data formatting. When setting up, there might be a bit of meta data I've forgotten to include (although the Models should create the base tables at least. Please let me know if there are issues.
+This project is built on a Bootstrap 3 Django implementation and has been recently upgraded to run on Django 3.1+ and now runs in a venv. It also uses the excellent django-tables import for most of the data formatting. When setting up, there might be a bit of meta data I've forgotten to include (although the Models should create the base tables at least. Please let me know if there are issues.
 
 If you would like to contribute, please get in touch!
 
@@ -38,11 +38,11 @@ If you would like to contribute, please get in touch!
 
 3. Create a user por/por on your local database (you can change this in settings.py)
 4. Use Django to migrate the database (create the tables) 
-5. A "cron" job to run "retic_engine.py" at 1 minute intervals.
+5. A "cron" job to run "retic_engine.py" at 1 minute intervals like this: * * * * * source /python/Web/por/.venv37/bin/activate; /python/Web/por/.venv37/bin/python /python/Web/por/por/retic_engine.py
 
 
 # TODO
-1. A screen for the addition of weather stations - it's rather hard coded at the moment.
+1. A screen for the addition of weather stations - it's a little hard coded at the moment.
 2. A screen to Add Stations - this is done manually but you can configure the GPIO assigments later.
 3. Some performance improvements.
 4. Remove redundant code - there is code for sign in, REST calls etc., which might not be needed.
