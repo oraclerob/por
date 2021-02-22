@@ -139,6 +139,9 @@ class ReticEngine():
         for i in run_details:
             rh = RunHeaders.objects.filter(id=i.run_id)
             st = Stations.objects.filter(id=i.station_id)
+            if st[0].status == 0:
+                print("Skipping station not enabled: ", st[0].station_number)
+                continue
             rd = RunDay.objects.filter(id=run_day_id)
             if rd[0].run_status == 'Stopped':
                 if (ReticEngine.MASTER_STATION_GPIO != 0):
